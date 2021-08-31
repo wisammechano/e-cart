@@ -17,10 +17,20 @@
     "start": "craco start",
     "build": "craco build",
     "test": "craco test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "prepare": "husky install",
+    "lint": "lint-staged"
   },
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": "react-app",
+    "rules": {
+      "react-hooks/exhaustive-deps": "error",
+      "no-var": "error",
+      "prefer-template": "warn",
+      "radix": "warn",
+      "no-console": "error",
+      "import/first": "error"
+    }
   },
   "browserslist": {
     "production": [
@@ -36,7 +46,20 @@
   },
   "devDependencies": {
     "autoprefixer": "^9",
+    "lint-staged": "^11.1.2",
     "postcss": "^7",
-    "tailwindcss": "npm:@tailwindcss/postcss7-compat"
+    "prettier": "^2.3.2",
+    "tailwindcss": "npm:@tailwindcss/postcss7-compat",
+    "husky": "^7.0.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
+      "prettier --write"
+    ]
   }
 }
