@@ -1,24 +1,17 @@
-import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import ProductCard from "../components/ProductCard";
 
 export default function Home(props) {
-  const [products, setProducts] = useState([]);
-
-  const fetchProducts = async () => {
-    const url = "/data.json";
-    const data = await fetch(url).then((r) => r.json());
-    setProducts(data);
-  };
-
-  useEffect(() => {
-    fetchProducts();
-  }, []);
+  const products = useSelector((state) => state.products.data);
+  const isLoading = useSelector((state) => state.products.loading);
 
   return (
     <div className="p-3 w-full flex justify-center flex-wrap">
-      {products.map((p) => (
-        <ProductCard onFabClick={() => {}} product={p} key={p.id} />
-      ))}
+      {!isLoading &&
+        products.map((p) => (
+          <ProductCard onFabClick={() => {}} product={p} key={p.id} />
+        ))}
+      {isLoading && <p className="mt-20">Loading data...</p>}
     </div>
   );
 }

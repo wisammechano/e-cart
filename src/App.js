@@ -1,10 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Navbar from "./components/Navbar";
 import Cart from "./pages/Cart";
+import { useDispatch } from "react-redux";
+import { getProducts } from "./features/products/productsSlice";
 
 function App() {
+  const dispatch = useDispatch();
+  useEffect(() => dispatch(getProducts()), [dispatch]);
+
   return (
     <div className="App">
       <Router>
