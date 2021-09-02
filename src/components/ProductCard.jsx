@@ -4,7 +4,7 @@ export default function ProductCard({ product, onFabClick }) {
       <img
         src={product.img}
         alt={product.title}
-        className="border-b border-gray-200"
+        className="border-b border-gray-200 w-full h-96 overflow-hidden object-contain"
       />
       <div className="flex justify-end -mt-8 px-4 w-full">
         <Fab onClick={onFabClick} />

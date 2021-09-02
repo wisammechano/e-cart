@@ -1,6 +1,8 @@
 import { SearchIcon } from "@heroicons/react/outline";
 import { ShoppingCartIcon } from "@heroicons/react/solid";
 import { useRef } from "react";
+import { Link } from "react-router-dom";
+
 export default function Navbar(props) {
   const searchRef = useRef(null);
   const onSearch = (e) => {
@@ -12,7 +14,7 @@ export default function Navbar(props) {
     <div className="w-full h-16 flex items-center px-2 md:px-1 py-1 justify-between bg-gray-100 shadow-sm sticky top-0 text-red-600 z-10">
       {/* Logo */}
       <div className="ml-8 text-lg font-bold hidden md:block text-black">
-        My Shop
+        <Link to="/">My Shop</Link>
       </div>
 
       {/* Search Form */}
@@ -37,21 +39,21 @@ export default function Navbar(props) {
 
       {/* Mobile Navigation */}
       <div className="ml-4 md:hidden">
-        <a href="/">
+        <Link to="/cart">
           <ShoppingCartWithBadge count="100" />
-        </a>
+        </Link>
       </div>
 
       {/* Navigation */}
       <div className="mr-8 hidden md:flex items-center font-semibold justify-center">
-        <a href="/" className="hover:text-red-500 hover:underline">
+        <Link to="/" className="hover:text-red-500 hover:underline">
           Home
-        </a>
+        </Link>
         <div className="w-px h-5 bg-red-300 mx-5" />
-        <a href="/" className="hover:text-red-500 hover:underline flex">
+        <Link to="/cart" className="hover:text-red-500 hover:underline flex">
           <ShoppingCartWithBadge count="100" />
           <span>Cart</span>
-        </a>
+        </Link>
       </div>
     </div>
   );
