@@ -4,7 +4,9 @@
     "title": "Winter body",
     "desc": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima, ex.",
     "price": 110,
-    "img": "https://github.com/AyaBellazreg/React-Shopping-Cart/blob/master/Shopping-Cart/src/images/item1.jpg?raw=true"
+    "img": "https://github.com/AyaBellazreg/React-Shopping-Cart/blob/master/Shopping-Cart/src/images/item1.jpg?raw=true",
+    "hasDiscount": true,
+    "discountPrice": 100
   },
   {
     "id": 2,
@@ -25,14 +27,18 @@
     "title": "White",
     "desc": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima, ex.",
     "price": 260,
-    "img": "https://github.com/AyaBellazreg/React-Shopping-Cart/blob/master/Shopping-Cart/src/images/item4.jpg?raw=true"
+    "img": "https://github.com/AyaBellazreg/React-Shopping-Cart/blob/master/Shopping-Cart/src/images/item4.jpg?raw=true",
+    "hasDiscount": true,
+    "discountPrice": 240
   },
   {
     "id": 5,
     "title": "Cropped-sho",
     "desc": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima, ex.",
     "price": 160,
-    "img": "https://github.com/AyaBellazreg/React-Shopping-Cart/blob/master/Shopping-Cart/src/images/item5.jpg?raw=true"
+    "img": "https://github.com/AyaBellazreg/React-Shopping-Cart/blob/master/Shopping-Cart/src/images/item5.jpg?raw=true",
+    "hasDiscount": true,
+    "discountPrice": 150
   },
   {
     "id": 6,
