@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import ProductCard from "../components/ProductCard";
-import { addItem } from "../features/cart/cartSlice";
+import { addItem } from "../store/cart/cartSlice";
 
 export default function Home() {
   const { data, loading } = useSelector((state) => state.products);

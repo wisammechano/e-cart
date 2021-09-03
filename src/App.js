@@ -4,8 +4,8 @@ import Home from "./pages/Home";
 import Navbar from "./components/Navbar";
 import Cart from "./pages/Cart";
 import { useDispatch } from "react-redux";
-import { getProducts } from "./features/products/productsSlice";
-import { getCart } from "./features/cart/cartSlice";
+import { getProducts } from "./store/products/productsSlice";
+import { getCart } from "./store/cart/cartSlice";
 
 function App() {
   const dispatch = useDispatch();
