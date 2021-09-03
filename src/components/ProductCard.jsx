@@ -11,8 +11,13 @@ export default function ProductCard({ product, onFabClick }) {
       </div>
       <div className="px-5 pb-5 relative">
         <h1 className="text-2xl font-bold">{product.title}</h1>
-        <p className="mt-2 text-lg font-semibold text-gray-600">
-          ${product.price}
+        <p className="mt-2 text-lg font-semibold text-gray-600 flex">
+          <span className={product.hasDiscount ? "line-through mr-2" : ""}>
+            ${product.price}
+          </span>
+          {product.hasDiscount && (
+            <span className="text-red-600">${product.discountPrice}</span>
+          )}
         </p>
         <p className="mt-1 text-gray-500">{product.desc}</p>
       </div>

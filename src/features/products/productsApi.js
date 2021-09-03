@@ -1,4 +1,4 @@
-export default async function fetchProducts(options) {
+export default async function fetchProducts(options = {}) {
   const url = "/data.json";
   const res = await fetch(url, options);
   if (res.ok) {

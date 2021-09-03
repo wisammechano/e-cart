@@ -5,10 +5,15 @@ import Navbar from "./components/Navbar";
 import Cart from "./pages/Cart";
 import { useDispatch } from "react-redux";
 import { getProducts } from "./features/products/productsSlice";
+import { getCart } from "./features/cart/cartSlice";
 
 function App() {
   const dispatch = useDispatch();
-  useEffect(() => dispatch(getProducts()), [dispatch]);
+
+  useEffect(() => {
+    dispatch(getProducts());
+    dispatch(getCart());
+  }, [dispatch]);
 
   return (
     <div className="App">

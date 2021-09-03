@@ -1,27 +1,16 @@
-export default function Cart(props) {
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { addItem, removeItem } from "../features/cart/cartSlice";
+
+export default function Cart() {
+  const cart = useSelector((state) => state.cart);
+  const dispatch = useDispatch();
+
   return (
     <div className="mx-auto mt-4 md:mt-10 flex flex-wrap md:flex-nowrap md:flex-row-reverse justify-center px-2 lg:px-12 xl:px-24">
       <div className="w-full md:w-2/6 md:ml-16">
         <div className="md:sticky top-16 py-2 bg-white">
-          <div className="bg-red-300 rounded-lg px-3 py-3 text-red-800">
-            <h2 className="text-2xl font-semibold mb-3">Cart Summary</h2>
-            <div className="font-sm flex justify-between px-5 border-b-2 py-3 border-red-200">
-              <div>
-                <p className="mb-1">3 Items</p>
-                <p className="mb-1">Shipping</p>
-                <p className="mt-3 font-semibold">Discount</p>
-              </div>
-              <div className="text-right font-semibold">
-                <p className="mb-1">$98.24</p>
-                <p className="mb-1">Free</p>
-                <p className="mt-3">- $40</p>
-              </div>
-            </div>
-            <div className="font-bold text-3xl px-5 mt-3 flex justify-between items-center">
-              <p className="text-xl font-semibold">Total</p>
-              <p>$90</p>
-            </div>
-          </div>
+          <CartSummary cart={cart} />
         </div>
       </div>
       <div className="w-full md:w-4/6">
@@ -31,15 +20,17 @@ export default function Cart(props) {
           </div>
         </div>
         <div className="divide-y">
-          {[1, 2, 3, 4, 5].map((i) => (
+          {cart.items.map((item) => (
             <CartItem
-              key={i}
-              item={{
-                id: 1,
-                title: "Winter body",
-                desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima, ex.",
-                price: 110,
-                img: "https://github.com/AyaBellazreg/React-Shopping-Cart/blob/master/Shopping-Cart/src/images/item1.jpg?raw=true",
+              key={item.id}
+              item={item}
+              onRemove={() => dispatch(removeItem({ item }))}
+              onQuantity={(amount) => {
+                if (amount > 0) {
+                  dispatch(addItem({ item, amount }));
+                } else {
+                  dispatch(removeItem({ item, amount }));
+                }
               }}
             />
           ))}
@@ -49,7 +40,33 @@ export default function Cart(props) {
   );
 }
 
-function CartItem({ item }) {
+function CartSummary({ cart }) {
+  return (
+    <div className="bg-red-300 rounded-lg px-3 py-3 text-red-800">
+      <h2 className="text-2xl font-semibold mb-3">Cart Summary</h2>
+      <div className="font-sm flex justify-between px-5 border-b-2 py-3 border-red-200">
+        <div>
+          <p className="mb-1">{cart.count} Items</p>
+          <p className="mb-1">Shipping</p>
+          <p className="mt-3 font-semibold">
+            Discount ({((cart.discountTotal / cart.total) * 100).toFixed(1)}%)
+          </p>
+        </div>
+        <div className="text-right font-semibold">
+          <p className="mb-1">${cart.total.toLocaleString()}</p>
+          <p className="mb-1">Free</p>
+          <p className="mt-3">- ${cart.discountTotal.toLocaleString()}</p>
+        </div>
+      </div>
+      <div className="font-bold text-3xl px-5 mt-3 flex justify-between items-center">
+        <p className="text-xl font-semibold">Total</p>
+        <p>${(cart.total - cart.discountTotal).toLocaleString()}</p>
+      </div>
+    </div>
+  );
+}
+
+function CartItem({ item, onRemove, onQuantity }) {
   return (
     <div className="flex justify-between items-center py-2">
       {/* Image and Title */}
@@ -63,19 +80,28 @@ function CartItem({ item }) {
           <h3 className="text-base md:tex-lg text-black font-bold">
             {item.title}
           </h3>
-          <div className="text-gray-600 font-bold font-base md:font-lg">
-            <p>$119</p>
+          <div className="text-gray-600 font-bold font-base md:font-lg flex">
+            <p className={item.hasDiscount ? "line-through mr-2" : ""}>
+              ${item.price}
+            </p>
+            {item.hasDiscount && (
+              <p className="text-red-600 font-extra-bold">
+                ${item.discountPrice}
+              </p>
+            )}
           </div>
-          <button className="text-xs text-red-300">Remove Item</button>
+          <button className="text-xs text-red-300" onClick={onRemove}>
+            Remove Item
+          </button>
         </div>
       </div>
       {/* Quantity Button */}
-      <QuantitySpinner />
+      <QuantitySpinner onAddRemove={onQuantity} quantity={item.quantity} />
     </div>
   );
 }
 
-function QuantitySpinner() {
+function QuantitySpinner({ onAddRemove, quantity }) {
   const style = `
     input[type='number']::-webkit-inner-spin-button,
     input[type='number']::-webkit-outer-spin-button {
@@ -83,13 +109,33 @@ function QuantitySpinner() {
       margin: 0;
     }
   `;
+
+  const onBlur = (e) => {
+    let val = e.target.value;
+    if (val === "") val = 0;
+    const difference = val - quantity;
+    onAddRemove(difference);
+  };
+
+  const [value, setValue] = useState(quantity);
+  const onAdd = () => {
+    setValue((v) => v + 1);
+    onAddRemove(1);
+  };
+
+  const onRemove = () => {
+    setValue((v) => v - 1);
+    onAddRemove(-1);
+  };
+
   return (
     <>
       <div className="flex h-8 rounded-lg bg-transparent">
         <style>{style}</style>
         <button
-          data-action="decrement"
+          data-action="remove"
           className="flex-shrink-0 bg-red-300 text-red-600 hover:text-red-500 hover:bg-red-400 h-full w-8 rounded-l cursor-pointer outline-none"
+          onClick={onRemove}
         >
           <span className="m-auto text-2xl font-thin">−</span>
         </button>
@@ -97,36 +143,18 @@ function QuantitySpinner() {
           type="number"
           className="w-12 outline-none focus:outline-none text-center bg-red-100 font-bold text-md hover:text-black focus:text-black md:text-basecursor-default flex items-center text-gray-700  outline-none"
           name="custom-input-number"
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+          onBlur={onBlur}
         />
         <button
-          data-action="increment"
+          data-action="add"
           className="flex-shrink-0 bg-red-300 text-red-600 hover:text-red-500 hover:bg-red-400 h-full w-8 rounded-r cursor-pointer"
+          onClick={onAdd}
         >
           <span className="m-auto text-2xl font-thin">+</span>
         </button>
       </div>
     </>
-  );
-}
-
-function QuantitySpinner2() {
-  return (
-    <div className="flex flex-wrap">
-      <div className="flex w-8/12">
-        <input
-          type="text"
-          value="7"
-          className="bg-white text-sm text-gray-900 text-center focus:outline-none border border-red-300 focus:border-red-500 rounded-l-md w-full"
-        />
-      </div>
-      <div className="flex flex-col w-4/12">
-        <button className="text-red-600 text-center text-md font-semibold rounded-tr-md px-1 bg-red-200 hover:bg-red-300 focus:outline-none border border-red-300 focus:border-red-500">
-          +
-        </button>
-        <button className="text-red-600 text-center text-md font-semibold rounded-br-md px-1 bg-red-200 hover:bg-red-300 focus:outline-none border border-red-300 focus:border-red-500">
-          -
-        </button>
-      </div>
-    </div>
   );
 }

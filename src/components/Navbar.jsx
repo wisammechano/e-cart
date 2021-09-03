@@ -1,6 +1,7 @@
 import { SearchIcon } from "@heroicons/react/outline";
 import { ShoppingCartIcon } from "@heroicons/react/solid";
 import { useRef } from "react";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 export default function Navbar(props) {
@@ -9,6 +10,8 @@ export default function Navbar(props) {
     e.preventDefault();
     alert(searchRef.current.value);
   };
+
+  const cartCount = useSelector((state) => state.cart.count);
 
   return (
     <div className="w-full h-16 flex items-center px-2 md:px-1 py-1 justify-between bg-gray-100 shadow-sm sticky top-0 text-red-600 z-10">
@@ -40,7 +43,7 @@ export default function Navbar(props) {
       {/* Mobile Navigation */}
       <div className="ml-4 md:hidden">
         <Link to="/cart">
-          <ShoppingCartWithBadge count="100" />
+          <ShoppingCartWithBadge count={cartCount} />
         </Link>
       </div>
 
@@ -51,7 +54,7 @@ export default function Navbar(props) {
         </Link>
         <div className="w-px h-5 bg-red-300 mx-5" />
         <Link to="/cart" className="hover:text-red-500 hover:underline flex">
-          <ShoppingCartWithBadge count="100" />
+          <ShoppingCartWithBadge count={cartCount} />
           <span>Cart</span>
         </Link>
       </div>
