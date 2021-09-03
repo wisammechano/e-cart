@@ -7,7 +7,10 @@ export default function CartSummary({ cart }) {
           <p className="mb-1">{cart.count} Items</p>
           <p className="mb-1">Shipping</p>
           <p className="mt-3 font-semibold">
-            Discount ({((cart.discountTotal / cart.total) * 100).toFixed(1)}%)
+            Discount{" "}
+            {cart.discountTotal > 0 && (
+              <>({((cart.discountTotal / cart.total) * 100).toFixed(1)}%)</>
+            )}
           </p>
         </div>
         <div className="text-right font-semibold">

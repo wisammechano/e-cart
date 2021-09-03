@@ -38,7 +38,9 @@ export default function Cart() {
             <CartItem
               key={item.id}
               item={item}
-              onRemove={() => dispatch(removeItem({ item }))}
+              onRemove={() =>
+                dispatch(removeItem({ item, amount: -1 * item.quantity }))
+              }
               onQuantity={(amount) => {
                 if (amount > 0) {
                   dispatch(addItem({ item, amount }));
